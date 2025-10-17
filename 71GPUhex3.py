@@ -170,8 +170,8 @@ class BitcoinKeySearcher:
     def __init__(self, target_address):
         self.target_address = target_address
         # 使用较小的范围进行演示，避免大整数问题
-        self.start_range = 2**60  # 从2^60开始用于测试
-        self.end_range = 2**61    # 到2^61用于测试
+        self.start_range = 1200000000000000000000  # 从2^60开始用于测试
+        self.end_range = 1200000001000000000000    # 到2^61用于测试
         self.found_key = None
         self.is_running = False
         self.address_generator = BitcoinAddressGenerator()
@@ -211,7 +211,7 @@ class BitcoinKeySearcher:
             address = self.address_generator.private_key_to_address(current_key)
             
             # 更新进度 (每1000个密钥或找到匹配时显示)
-            if i % 1000 == 0 or address == self.target_address:
+            if i % 100000000 == 0 or address == self.target_address:
                 self.progress_monitor.update(
                     self.progress_monitor.keys_checked + i + 1,
                     current_key, 
@@ -253,7 +253,7 @@ class BitcoinKeySearcher:
                     address = self.address_generator.private_key_to_address(current_key)
                     
                     # 更新进度
-                    if i % 1000 == 0 or address == self.target_address:
+                    if i % 100000000 == 0 or address == self.target_address:
                         total_checked = self.progress_monitor.keys_checked + keys_processed + i + 1
                         self.progress_monitor.update(total_checked, current_key, address)
                     
@@ -291,7 +291,7 @@ class BitcoinKeySearcher:
         self.is_running = True
         start_time = datetime.now()
         
-        batch_size = 10000  # 每批处理10K个密钥
+        batch_size = 10000000000  # 每批处理10K个密钥
         current_batch = self.start_range
         
         try:
